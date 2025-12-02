@@ -38,25 +38,6 @@ fullset_path = data/fullset
 - `subset_path` points to a small subset of images for testing.
 - `fullset_path` points to the full dataset.
 
-5\. Prepare your dataset
-
-```
-data/
-├─ fullset/
-│  ├─ M01/
-│  │  ├─ M1 (1).JPG
-│  │  ├─ M1 (2).JPG
-│  │  └─ ...
-│  ├─ M02/
-│  │  └─ ...
-│  └─ ...
-└─ subset/
-   ├─ subset/
-   │  ├─ 1 (1).JPG
-   │  ├─ mondriaan1 (1).JPG
-   │  └─ ...
-```
-
 6\. Run the main script (from project root)
 
 ```

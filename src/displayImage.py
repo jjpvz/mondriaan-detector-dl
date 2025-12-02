@@ -1,6 +1,6 @@
 import cv2 as cv
 
-def display_image_cv(img, title="Image", auto_close_ms=None):
+def display_image(img, title="Image", auto_close_ms=None):
     brg_img = cv.cvtColor(img, cv.COLOR_RGB2BGR)
     img = brg_img
 
