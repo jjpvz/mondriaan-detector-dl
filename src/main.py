@@ -1,46 +1,106 @@
-from createModel import create_cnn_model
-from displayImage import display_image
-from loadData import load_images
-from prepareData import prepare_data_for_dl
-from sklearn.model_selection import train_test_split
 import tensorflow as tf
 import numpy as np
+import numpy as np
+import keras
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+
+image_size = (180, 180)
+batch_size = 128
 
 if __name__ == "__main__":
-    images = load_images("fullset")
+    train_ds, val_ds = keras.utils.image_dataset_from_directory(
+        r"C:\workspace\evml\EVD3\mondriaan-detector-dl\data\fullset",
+        validation_split=0.2,
+        subset="both",
+        seed=1337,
+        image_size=image_size,
+        batch_size=batch_size,
+    )
 
-    X, y, class_names = prepare_data_for_dl(images)
+    num_classes = len(train_ds.class_names)
+    input_shape = image_size + (3,)
 
-    input_shape = X.shape[1:] 
-    num_classes = len(class_names)
+    data_augmentation = keras.Sequential([
+        keras.layers.RandomFlip("horizontal"),
+        keras.layers.RandomRotation(0.1),
+        keras.layers.RandomZoom(0.1),
+    ])
 
-    print(f"Totale dataset vorm (X): {X.shape}") 
-    print(f"Aantal klassen: {num_classes}")
+    model = keras.Sequential([
+        keras.Input(shape=input_shape),
+        data_augmentation,
+        keras.layers.Rescaling(1./255), 
 
-    model = create_cnn_model(input_shape, num_classes)
+        # 1. CONVOLUTIONAL LAAG: Leert features te extraheren
+        keras.layers.Conv2D(32, (3, 3), activation='relu'),
+        keras.layers.MaxPooling2D((2, 2)),
+        
+        # 2. Extra CONVOLUTIONAL LAAG
+        keras.layers.Conv2D(64, (3, 3), activation='relu'),
+        keras.layers.MaxPooling2D((2, 2)),
+        
+        # 3. De output "platte" maken (Flatten)
+        keras.layers.Flatten(),
+        
+        # 4. DENSE LAAG (Klassieke Neurale Netwerk): Voor classificatie
+        keras.layers.Dense(128, activation='relu'),
+        
+        # 5. OUTPUT LAAG: Aantal eenheden gelijk aan het aantal klassen
+        keras.layers.Dense(num_classes, activation='softmax') # 'softmax' voor multi-klasse classificatie
+    ])
+
+    model.summary()
 
     model.compile(optimizer='adam',
                 loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False), # Gebruik SC_Crossentropy voor integer labels
                 metrics=['accuracy'])
-
-    model.summary()
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
-
-    history = model.fit(
-        X_train, 
-        y_train, 
-        epochs=20,         
-        validation_split=0.1,
-        shuffle=True)
     
-    test_loss, test_acc = model.evaluate(X_test, y_test, verbose=2)
-    print(f'\nTest Nauwkeurigheid: {test_acc:.4f}')
+    
+    history = model.fit(
+        train_ds,
+        validation_data=val_ds,
+        epochs=20
+    )
 
-    predictions = model.predict(X_test)
-    most_probable_predictions = np.argmax(predictions, axis=1)
+    # --- Learning curves ---
+    plt.figure(figsize=(10,5))
+    plt.plot(history.history['loss'], label='Training loss')
+    plt.plot(history.history['val_loss'], label='Validation loss')
+    plt.plot(history.history['accuracy'], label='Training accuracy')
+    plt.plot(history.history['val_accuracy'], label='Validation accuracy')
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss/Accuracy")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
-    print("\nVoorbeeld van voorspellingen op de testset:")
-    for i in range(5):
-        print(f"Werkelijke label: {class_names[y_test[i]]} (Index: {y_test[i]})")
-        print(f"Voorspeld label: {class_names[most_probable_predictions[i]]} (Index: {most_probable_predictions[i]})\n")
+    val_loss, val_acc = model.evaluate(val_ds)
+    print("Validation accuracy:", val_acc)
+
+
+    # Convert val_ds to numpy arrays for predictions
+    X_val = []
+    y_val = []
+
+    for batch_imgs, batch_labels in val_ds:
+        X_val.append(batch_imgs.numpy())
+        y_val.append(batch_labels.numpy())
+
+    X_val = np.concatenate(X_val)
+    y_val = np.concatenate(y_val)
+
+    pred_probs = model.predict(X_val)
+    y_pred = np.argmax(pred_probs, axis=1)
+
+    cm = confusion_matrix(y_val, y_pred, normalize='true')
+
+    plt.figure(figsize=(8,6))
+    sns.heatmap(cm, annot=True, cmap="Blues",
+                xticklabels=train_ds.class_names,
+                yticklabels=train_ds.class_names)
+    plt.xlabel("Predicted")
+    plt.ylabel("True")
+    plt.title("Normalized Confusion Matrix")
+    plt.show()
