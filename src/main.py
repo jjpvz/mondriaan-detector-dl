@@ -1,8 +1,19 @@
 import keras
-import tensorflow as tf
-from deep_learning import deep_learning
-from augment_images import augment_images, display_augmented_images
-from enhance_images import display_enhanced_images, enhance_images
+
+from inspection.print_specification_report import print_specification_report
+from preprocessing.augment_images import augment_images, display_augmented_images
+from preprocessing.enhance_images import display_enhanced_images, enhance_images
+
+from model.find_optimal_model import find_optimal_model
+from model.get_optimal_model import get_optimal_model
+from model.train_model import train_model
+
+from inspection.plot_confusion_matrix import plot_confusion_matrix
+from inspection.print_validation_accuracy import print_validation_accuracy
+from inspection.visualize_featuremaps import visualize_featuremaps
+from inspection.visualize_filters import visualize_filters
+from inspection.get_predictions import get_predictions
+from inspection.plot_learning_curves import plot_learning_curves
 
 image_size = (224, 224)
 batch_size = 128
@@ -16,13 +27,30 @@ if __name__ == "__main__":
         image_size=image_size,
         batch_size=batch_size,
     )
+
+    # DEBUG
+    # check_dataset_distribution(train_ds, "Training Set")
+    # check_dataset_distribution(val_ds, "Validation Set")
     
-    # Debug
+    # DEBUG
     # display_augmented_images(train_ds)
     # display_enhanced_images(train_ds)
 
     # Create additional layers
-    # augmentation = augment_images()
-    # enhancement = enhance_images()
+    augmentation = augment_images()
+    # enhancement = enhance_images() --> Not needed, provides no improvements
 
-    # deep_learning(train_ds, val_ds, image_size, augmentation)
+    input_shape = image_size + (3,)
+    num_classes = len(train_ds.class_names)
+
+    # find_optimal_model(input_shape, num_classes, train_ds, val_ds, augmentation) # --> Outcome defined in ./get_optimal_model.py
+    model = get_optimal_model(input_shape, num_classes, augmentation)
+    history = train_model(model, train_ds, val_ds)
+    y_val, y_pred = get_predictions(model, val_ds)
+
+    print_specification_report(y_val, y_pred, train_ds)
+    # visualize_filters(model)
+    # visualize_featuremaps(model, val_ds)
+    plot_learning_curves(history)
+    print_validation_accuracy(model, val_ds)
+    plot_confusion_matrix(y_val, y_pred, train_ds)

@@ -7,6 +7,7 @@ __pycache__/
 *.so
 
 data/*
+tuner_example/*
 
 # Distribution / packaging
 .Python
