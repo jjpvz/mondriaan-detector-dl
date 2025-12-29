@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 def augment_images():
     return keras.Sequential([
         # Simuleert kijkhoekvariatie
-        keras.layers.RandomShear(0.2),
+        keras.layers.RandomShear(x_factor=[0.0, 0.2]),
         keras.layers.RandomRotation(0.1),
 
         # Simuleert afstand tot het schilderij
-        keras.layers.RandomZoom(0.2),
+        keras.layers.RandomZoom(height_factor=[-0.2, 0.2]),
 
         # Simuleert lux-variatie
         keras.layers.RandomBrightness(0.3),

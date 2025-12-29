@@ -7,6 +7,7 @@ from preprocessing.enhance_images import display_enhanced_images, enhance_images
 from model.find_optimal_model import find_optimal_model
 from model.get_optimal_model import get_optimal_model
 from model.train_model import train_model
+from model.test_model import test_model
 
 from inspection.plot_confusion_matrix import plot_confusion_matrix
 from inspection.print_validation_accuracy import print_validation_accuracy
@@ -20,7 +21,7 @@ batch_size = 128
 
 if __name__ == "__main__":
     train_ds, val_ds = keras.utils.image_dataset_from_directory(
-        r"C:\workspace\evml\EVD3\mondriaan-detector-dl\data\fullset",
+        r"C:\GIT\mondriaan-detector-dl\data\fullset",
         validation_split=0.2,
         subset="both",
         seed=1337,
@@ -54,3 +55,6 @@ if __name__ == "__main__":
     plot_learning_curves(history)
     print_validation_accuracy(model, val_ds)
     plot_confusion_matrix(y_val, y_pred, train_ds)
+
+    # Test het model op testset
+    test_model(model, train_ds.class_names)
