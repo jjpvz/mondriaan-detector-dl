@@ -20,7 +20,10 @@ image_size = (224, 224)
 batch_size = 128
 
 if __name__ == "__main__":
-    train_ds, val_ds = keras.utils.image_dataset_from_directory(
+ 
+   
+   
+   train_ds, val_ds = keras.utils.image_dataset_from_directory(
         r"C:\GIT\mondriaan-detector-dl\data\fullset",
         validation_split=0.2,
         subset="both",
@@ -30,31 +33,37 @@ if __name__ == "__main__":
     )
 
     # DEBUG
-    # check_dataset_distribution(train_ds, "Training Set")
-    # check_dataset_distribution(val_ds, "Validation Set")
+    #check_dataset_distribution(train_ds, "Training Set")
+    #check_dataset_distribution(val_ds, "Validation Set")
     
     # DEBUG
-    # display_augmented_images(train_ds)
-    # display_enhanced_images(train_ds)
+   # display_augmented_images(train_ds)
+   # display_enhanced_images(train_ds)
 
     # Create additional layers
-    augmentation = augment_images()
-    # enhancement = enhance_images() --> Not needed, provides no improvements
+   augmentation = augment_images()
+    #enhancement = enhance_images() --> Not needed, provides no improvements
 
-    input_shape = image_size + (3,)
-    num_classes = len(train_ds.class_names)
+   input_shape = image_size + (3,)
+   num_classes = len(train_ds.class_names)
 
-    # find_optimal_model(input_shape, num_classes, train_ds, val_ds, augmentation) # --> Outcome defined in ./get_optimal_model.py
-    model = get_optimal_model(input_shape, num_classes, augmentation)
-    history = train_model(model, train_ds, val_ds)
-    y_val, y_pred = get_predictions(model, val_ds)
+   find_optimal_model(input_shape, num_classes, train_ds, val_ds, augmentation) # --> Outcome defined in ./get_optimal_model.py
+   model = get_optimal_model(input_shape, num_classes, augmentation)
+   history = train_model(model, train_ds, val_ds)
+   y_val, y_pred = get_predictions(model, val_ds)
 
-    print_specification_report(y_val, y_pred, train_ds)
-    # visualize_filters(model)
-    # visualize_featuremaps(model, val_ds)
-    plot_learning_curves(history)
-    print_validation_accuracy(model, val_ds)
-    plot_confusion_matrix(y_val, y_pred, train_ds)
+   print_specification_report(y_val, y_pred, train_ds)
+  #  visualize_filters(model)
+  #  visualize_featuremaps(model, val_ds)
+   plot_learning_curves(history)
+   print_validation_accuracy(model, val_ds)
+   plot_confusion_matrix(y_val, y_pred, train_ds)
 
-    # Test het model op testset
-    test_model(model, train_ds.class_names)
+    # Laad het model en test op testset
+   model_loaded = keras.models.load_model(r"C:\GIT\mondriaan-detector-dl\results\mondriaan_detector_DL.keras")
+
+    # Definieer de class names
+   class_names = ['mondriaan1', 'mondriaan2', 'mondriaan3', 'mondriaan4', 'niet_mondriaan']
+    
+    # Test het geladen model op testset
+   test_model(model_loaded, class_names)
