@@ -1,3 +1,8 @@
+
+from model.transfer_learning_model import transfer_learning_model, finetune_mobilenetv2
+from preprocessing.augment_images import augment_images_tl
+import tensorflow as tf
+
 import keras
 
 from inspection.print_specification_report import print_specification_report
@@ -24,7 +29,7 @@ if __name__ == "__main__":
    '''
    
    train_ds, val_ds = keras.utils.image_dataset_from_directory(
-        r"C:\GIT\mondriaan-detector-dl\data\fullset",
+        r"C:\Users\engineer1\Desktop\Data\personal\HAN\EVD3\mondriaan-detector-dl\data\fullset",
         validation_split=0.2,
         subset="both",
         seed=1337,
@@ -41,15 +46,35 @@ if __name__ == "__main__":
    # display_enhanced_images(train_ds)
 
     # Create additional layers
-   augmentation = augment_images()
+   #augmentation = augment_images()
+   augmentation = augment_images_tl()
     #enhancement = enhance_images() --> Not needed, provides no improvements
 
    input_shape = image_size + (3,)
    num_classes = len(train_ds.class_names)
 
-   find_optimal_model(input_shape, num_classes, train_ds, val_ds, augmentation) # --> Outcome defined in ./get_optimal_model.py
-   model = get_optimal_model(input_shape, num_classes, augmentation)
+   #find_optimal_model(input_shape, num_classes, train_ds, val_ds, augmentation) # --> Outcome defined in ./get_optimal_model.py
+   #model = get_optimal_model(input_shape, num_classes, augmentation)
+   model = transfer_learning_model(
+    input_shape=input_shape,
+    num_classes=num_classes,
+    augmentation=augmentation,
+    dense_units=256,
+    dropout=0.3,
+    lr=1e-4
+    )
+   model.summary()   # <<< tabel
    history = train_model(model, train_ds, val_ds)
+
+   # fine-tune
+   model = finetune_mobilenetv2(model, fine_tune_at=120, lr=1e-5)
+   model.summary()
+
+   callbacks_ft = [
+    tf.keras.callbacks.EarlyStopping(monitor="val_loss", patience=2, restore_best_weights=True),
+   ]
+   history_ft = model.fit(train_ds, validation_data=val_ds, epochs=5, callbacks=callbacks_ft)
+
    y_val, y_pred = get_predictions(model, val_ds)
 
    print_specification_report(y_val, y_pred, train_ds)
@@ -62,11 +87,10 @@ if __name__ == "__main__":
    #uncomment this to test the model
    '''
     # Laad het model en test op testset
-   model_loaded = keras.models.load_model(r"C:\GIT\mondriaan-detector-dl\results\mondriaan_detector_DL.keras")
+   #model_loaded = keras.models.load_model(r"C:\GIT\mondriaan-detector-dl\results\mondriaan_detector_DL.keras")
 
     # Definieer de class names
    class_names = ['mondriaan1', 'mondriaan2', 'mondriaan3', 'mondriaan4', 'niet_mondriaan']
     
     # Test het geladen model op testset
-   test_model(model_loaded, class_names, test_dir=r'C:\GIT\mondriaan-detector-dl\data\testset')
-   
+   test_model(model, class_names)

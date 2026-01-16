@@ -22,7 +22,7 @@ def predict_single_image(model, image_path, class_names):
     
     return class_names[predicted_class_idx], predicted_class_idx, confidence
 
-def test_model(model, class_names, test_dir=r'C:\GIT\mondriaan-detector-dl\data\testset'):
+def test_model(model, class_names, test_dir=r'C:\Users\engineer1\Desktop\Data\personal\HAN\EVD3\mondriaan-detector-dl\testset_2_label'):
     """Test het model op alle afbeeldingen in een directory."""
     print(f"\n{'='*60}")
     print(f"MODEL TESTEN OP: {test_dir}")
