@@ -7,7 +7,7 @@ from preprocessing.enhance_images import display_enhanced_images, enhance_images
 from model.find_optimal_model import find_optimal_model
 from model.get_optimal_model import get_optimal_model
 from model.train_model import train_model
-from model.test_model import test_model
+from model.test_model import test_model, test_model_gui
 
 from inspection.plot_confusion_matrix import plot_confusion_matrix
 from inspection.print_validation_accuracy import print_validation_accuracy
@@ -20,8 +20,8 @@ image_size = (224, 224)
 batch_size = 128
 
 if __name__ == "__main__":
- 
    
+   '''
    
    train_ds, val_ds = keras.utils.image_dataset_from_directory(
         r"C:\GIT\mondriaan-detector-dl\data\fullset",
@@ -58,7 +58,9 @@ if __name__ == "__main__":
    plot_learning_curves(history)
    print_validation_accuracy(model, val_ds)
    plot_confusion_matrix(y_val, y_pred, train_ds)
-
+   
+   #uncomment this to test the model
+   '''
     # Laad het model en test op testset
    model_loaded = keras.models.load_model(r"C:\GIT\mondriaan-detector-dl\results\mondriaan_detector_DL.keras")
 
@@ -66,4 +68,5 @@ if __name__ == "__main__":
    class_names = ['mondriaan1', 'mondriaan2', 'mondriaan3', 'mondriaan4', 'niet_mondriaan']
     
     # Test het geladen model op testset
-   test_model(model_loaded, class_names)
+   test_model(model_loaded, class_names, test_dir=r'C:\GIT\mondriaan-detector-dl\data\testset')
+   

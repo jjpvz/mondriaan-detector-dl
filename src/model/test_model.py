@@ -2,6 +2,8 @@ import keras
 import numpy as np
 from pathlib import Path
 import time
+import cv2 as cv
+from GUI.gui import show_directory_selection_window, show_prediction_window
 
 IMAGE_SIZE = (224, 224)
 
@@ -52,3 +54,27 @@ def test_model(model, class_names, test_dir=r'C:\GIT\mondriaan-detector-dl\data\
 
     accuracy = (counter_correct / total_images) * 100 if total_images > 0 else 0
     print(f"\nTotale nauwkeurigheid op testset: {accuracy:.2f}% ({counter_correct} van de {total_images} correct voorspeld)")
+    return
+
+
+def test_model_gui(model):
+    files_selected = []
+    path_str = show_directory_selection_window()
+    if path_str is None:
+        print("Geen map geselecteerd. Programma wordt afgesloten.")
+        exit(0)
+    path = Path(path_str)
+    for img in path.glob("*.JPG"):
+        files_selected.append(img)
+
+    for img in files_selected:
+        frame = cv.imread(str(img))  
+        
+        if frame is None:
+            print(f"Kon afbeelding niet laden: {img}")
+            exit(0)
+        class_names = ['mondriaan1', 'mondriaan2', 'mondriaan3', 'mondriaan4', 'niet_mondriaan']    
+        predicted_class, predicted_idx, confidence = predict_single_image(model, img, class_names)
+        
+        show_prediction_window(frame, predicted_class, confidence, auto_close_ms=5000)
+        print(f"Voorspelling: {predicted_class} (index: {predicted_idx}) - Zekerheid: {confidence*100:.2f}%")
