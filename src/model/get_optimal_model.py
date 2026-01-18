@@ -25,7 +25,7 @@ def get_optimal_model(input_shape, num_classes, data_augmentation_layer):
 
     model.summary()
 
-    model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001),
+    model.compile(optimizer=keras.optimizers.Adam(learning_rate=1e-4),
                 loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False), # Gebruik SC_Crossentropy voor integer labels
                 metrics=['accuracy'])
     
