@@ -3,31 +3,12 @@ import matplotlib.pyplot as plt
 
 def augment_images():
     return keras.Sequential([
-        # Simuleert kijkhoekvariatie
-        keras.layers.RandomShear(x_factor=[0.0, 0.2]),
-        keras.layers.RandomRotation(0.1),
-
-        # Simuleert afstand tot het schilderij
-        keras.layers.RandomZoom(height_factor=[-0.2, 0.2]),
-
-        # Simuleert lux-variatie
-        keras.layers.RandomBrightness(0.3),
-        keras.layers.RandomContrast(0.3),
-
-        keras.layers.Rescaling(1./255),
-        keras.layers.Normalization(axis=-1), 
-    ])
-
-def augment_images_tl():
-    return keras.Sequential([
         keras.layers.RandomShear(x_factor=[0.0, 0.2]),
         keras.layers.RandomRotation(0.1),
         keras.layers.RandomZoom(height_factor=[-0.2, 0.2]),
         keras.layers.RandomBrightness(0.3),
         keras.layers.RandomContrast(0.3),
-        # GEEN Rescaling / Normalization hier!
     ])
-
 
 def display_augmented_images(dataset):
     # Pak één batch uit de trainingsset

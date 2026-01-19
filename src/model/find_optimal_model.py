@@ -10,7 +10,7 @@ def find_optimal_model(input_shape, num_classes, train_ds, val_ds, data_augmenta
 
     tuner = kt.Hyperband(my_builder, 
                          objective='val_accuracy', 
-                         max_epochs=10, 
+                         max_epochs=40, 
                          factor = 3,
                          directory = 'tuner_example',
                          project_name = 'intro_to_kt')
