@@ -4,7 +4,24 @@ from pathlib import Path
 import time
 import cv2 as cv
 from GUI.gui import show_directory_selection_window, show_prediction_window
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
 
+this file contains functions to test the trained model on a set of images or via a GUI
+
+how to use:
+1. test_model(model, class_names, test_dir)
+    - model: trained keras model
+    - class_names: list of class names corresponding to model output indices
+    - test_dir: directory containing test images
+2. test_model_gui(model)
+    - model: trained keras model
+    - opens a GUI to select a directory and display predictions on images
+
+'''
 IMAGE_SIZE = (224, 224)
 
 def predict_single_image(model, image_path, class_names):

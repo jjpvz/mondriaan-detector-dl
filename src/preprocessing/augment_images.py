@@ -1,3 +1,20 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
+
+this file contains functions for image data augmentation
+
+how to use:
+1. augment_images()
+    - Returns: Sequential model with augmentation layers
+    - Applies: random shear, rotation, zoom, brightness, and contrast
+2. display_augmented_images(dataset)
+    - dataset: Keras dataset to augment
+    - Displays original and augmented versions side by side
+
+'''
 import keras
 import matplotlib.pyplot as plt
 

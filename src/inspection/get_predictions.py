@@ -1,3 +1,18 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
+
+this file contains functions to get model predictions on validation data
+
+how to use:
+1. get_predictions(model, val_ds)
+    - model: trained Keras model
+    - val_ds: validation dataset
+    - Returns: tuple (y_val, y_pred) with true and predicted labels
+
+'''
 import numpy as np
 
 def get_predictions(model, val_ds):

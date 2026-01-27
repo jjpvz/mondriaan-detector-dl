@@ -1,3 +1,20 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
+
+this file contains the optimal CNN model architecture
+
+how to use:
+1. get_optimal_model(input_shape, num_classes, data_augmentation_layer)
+    - input_shape: tuple of image dimensions (height, width, channels)
+    - num_classes: number of output classes
+    - data_augmentation_layer: augmentation layer to apply
+    - Returns: compiled Keras Sequential model with 3 Conv2D layers
+    - Architecture: Conv2D -> MaxPooling (x3) -> Dense -> Softmax
+
+'''
 import tensorflow as tf
 import keras
 

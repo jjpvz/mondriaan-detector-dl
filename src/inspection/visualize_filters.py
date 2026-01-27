@@ -1,3 +1,18 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
+
+this file contains functions to visualize convolutional filters
+
+how to use:
+1. visualize_filters(model)
+    - model: trained Keras CNN model
+    - Prints filter shapes for all Conv2D layers
+    - Visualizes the first 6 filters from the first Conv2D layer
+
+'''
 import matplotlib.pyplot as plt
 import keras
 

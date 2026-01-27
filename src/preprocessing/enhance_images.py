@@ -1,3 +1,20 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
+
+this file contains functions for image enhancement
+
+how to use:
+1. enhance_images()
+    - Returns: Sequential model with enhancement layers
+    - Applies: contrast and brightness adjustments
+2. display_enhanced_images(dataset)
+    - dataset: Keras dataset to enhance
+    - Displays original and enhanced versions side by side
+
+'''
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import keras

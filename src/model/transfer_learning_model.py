@@ -1,3 +1,22 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
+
+this file contains functions for transfer learning using MobileNetV2
+
+how to use:
+1. transfer_learning_model(input_shape, num_classes, augmentation, dense_units, dropout, lr)
+    - input_shape: tuple of image dimensions (height, width, channels)
+    - num_classes: number of output classes
+    - augmentation: optional augmentation layer
+    - Returns: compiled Keras model with frozen MobileNetV2 base
+2. finetune_mobilenetv2(model, train_ds, val_ds, epochs, base_model_trainable)
+    - model: pre-trained model to fine-tune
+    - Unfreezes base model layers for fine-tuning
+
+'''
 from tensorflow import keras
 from tensorflow.keras import layers
 

@@ -1,3 +1,19 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
+
+this file contains functions to visualize feature maps from convolutional layers
+
+how to use:
+1. visualize_featuremaps(model, val_ds)
+    - model: trained Keras CNN model
+    - val_ds: validation dataset
+    - Visualizes feature maps from each Conv2D and MaxPooling layer
+    - Shows how the network processes an input image
+
+'''
 import keras
 import matplotlib.pyplot as plt
 import numpy as np

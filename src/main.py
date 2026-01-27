@@ -1,4 +1,24 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
 
+this file contains the main entry point for the Mondriaan detector project
+
+how to use:
+1. Configure settings in config.ini
+2. Set transfer_learning = True/False to choose between transfer learning or regular CNN
+3. Run this file to train and test the model
+4. Uncomment specific inspection functions to analyze model performance
+
+The script handles:
+- Model training (regular CNN or transfer learning)
+- Model evaluation on test set
+- Optional GUI for testing individual images
+- Various inspection and visualization tools
+
+'''
 from model.transfer_learning_model import transfer_learning_model, finetune_mobilenetv2
 from preprocessing.augment_images import augment_images
 import tensorflow as tf

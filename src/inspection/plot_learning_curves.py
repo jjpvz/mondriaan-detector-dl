@@ -1,3 +1,17 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
+
+this file contains functions to plot training history curves
+
+how to use:
+1. plot_learning_curves(history)
+    - history: Keras training history object
+    - Plots training and validation loss/accuracy over epochs
+
+'''
 import matplotlib.pyplot as plt
 
 def plot_learning_curves(history):

@@ -1,3 +1,23 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
+
+this file contains GUI functions for the Mondriaan detector
+
+how to use:
+1. show_directory_selection_window()
+    - Opens a GUI to select a directory
+    - Returns: directory path or None if cancelled
+2. show_prediction_window(image_paths, predictions, class_names, confidence_scores)
+    - image_paths: list of paths to images
+    - predictions: list of predicted class indices
+    - class_names: list of class names
+    - confidence_scores: list of confidence scores for predictions
+    - Opens a GUI to navigate through images and see predictions
+
+'''
 import os
 import tkinter as tk
 from tkinter import ttk

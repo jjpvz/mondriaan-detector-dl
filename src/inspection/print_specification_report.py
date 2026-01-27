@@ -1,3 +1,19 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
+
+this file contains functions to print a detailed classification report
+
+how to use:
+1. print_specification_report(y_val, y_pred, train_ds)
+    - y_val: true labels
+    - y_pred: predicted labels
+    - train_ds: dataset containing class names
+    - Prints precision, recall, F1-score per class and weighted F1-score
+
+'''
 from sklearn.metrics import classification_report, f1_score
 import numpy as np
 import numpy as np

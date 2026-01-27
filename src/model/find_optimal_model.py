@@ -1,3 +1,20 @@
+'''
+Authors :
+- Julian van Zwol
+- Sohrab Hakimi
+- Roel van Eeten
+
+this file contains functions for hyperparameter tuning using Keras Tuner
+
+how to use:
+1. find_optimal_model(input_shape, num_classes, train_ds, val_ds, data_augmentation_layer)
+    - Uses Hyperband tuning to find optimal hyperparameters
+    - Searches for best number of units and learning rate
+    - Returns: best model with optimal hyperparameters
+2. get_tuner_model(input_shape, num_classes, data_augmentation_layer)
+    - Returns: model builder function for tuner
+
+'''
 import keras
 import keras_tuner as kt
 
