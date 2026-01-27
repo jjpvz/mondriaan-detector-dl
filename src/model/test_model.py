@@ -22,7 +22,7 @@ def predict_single_image(model, image_path, class_names):
     
     return class_names[predicted_class_idx], predicted_class_idx, confidence
 
-def test_model(model, class_names, test_dir=r'C:\Users\engineer1\Desktop\Data\personal\HAN\EVD3\mondriaan-detector-dl\testset_2_label'):
+def test_model(model, class_names, test_dir=r'C:\GIT\mondriaan-detector-dl\data\testset'):
     """Test het model op alle afbeeldingen in een directory."""
     print(f"\n{'='*60}")
     print(f"MODEL TESTEN OP: {test_dir}")
@@ -76,5 +76,5 @@ def test_model_gui(model):
         class_names = ['mondriaan1', 'mondriaan2', 'mondriaan3', 'mondriaan4', 'niet_mondriaan']    
         predicted_class, predicted_idx, confidence = predict_single_image(model, img, class_names)
         
-        show_prediction_window(frame, predicted_class, confidence, auto_close_ms=5000)
+        show_prediction_window(frame, predicted_class, confidence, auto_close_ms=1000)
         print(f"Voorspelling: {predicted_class} (index: {predicted_idx}) - Zekerheid: {confidence*100:.2f}%")

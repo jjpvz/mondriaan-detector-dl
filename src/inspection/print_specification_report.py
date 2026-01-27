@@ -10,5 +10,5 @@ def print_specification_report(y_val, y_pred, train_ds):
     report = classification_report(y_val, y_pred, labels=present_labels, target_names=present_names)
     print(report)
 
-    f1 = f1_score(y_val, y_pred, labels=labels, average='weighted', zero_division=0)
+    f1 = f1_score(y_val, y_pred, labels=present_labels, average='weighted', zero_division=0)
     print(f"Gemiddelde F1-score: {f1:.4f}")
